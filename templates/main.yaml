@@ -1,0 +1,31 @@
+templates:
+  analytics-ml:
+    - data
+    - log
+    - notebooks
+    - .env
+    - .env.example
+    - readme.ml.md >> readme.md
+    - dependencies/requirements.ml.txt >> requirements.txt
+    - .gitignore
+
+  etl:
+    - database
+    - !database/models
+    - log
+    - utils
+    - yoyo.ini
+    - readme.migrations.md >> requirements.txt
+    - .gitignore
+    - docker-compose.etl.dev.yaml >> docker-compose.dev.yaml
+    - requirements.etl.txt >> requirements.txt
+
+  api:
+    - database
+    - docker-compose.api.dev.yaml >> docker-compose.dev.yaml
+    - Dockerfile
+    - app
+    - log
+    - .dockerignore
+    - yoyo.ini
+    - requirements.api.txt >> requirements.txt
