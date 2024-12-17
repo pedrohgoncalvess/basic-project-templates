@@ -11,7 +11,7 @@ def main() -> None:
     parser.add_argument("--name", type=str, required=True)
     parser.add_argument("--path", type=str, default=".",
                         help="Path to create project.")
-    parser.add_argument("--template", type=str, required=True,
+    parser.add_argument("--template", type=str, default="default", required=False,
                         help="Template to use.")
 
     args = parser.parse_args()
@@ -24,6 +24,10 @@ def main() -> None:
     os.makedirs(project_final_path, exist_ok=False)
 
     files = get_template_items(args.template.lower())
+
+    if not files:
+        raise ValueError(f"Template {args.template} not exists.")
+
     in_files, ex_files = parse_template_items(files)
 
     print(f"Generating {args.template.upper()} template...")
