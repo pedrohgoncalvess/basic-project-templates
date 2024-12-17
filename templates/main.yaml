@@ -1,5 +1,15 @@
 templates:
+  default:
+    - makefile
+    - log
+    - .env
+    - .env.example
+    - utils
+    - readme.default.md >> readme.md
+    - dependencies\requirements.default.txt >> requirements.txt
+
   analytics-ml:
+    - makefile
     - data
     - log
     - notebooks
@@ -10,17 +20,19 @@ templates:
     - .gitignore
 
   etl:
+    - makefile
     - database
     - database\models!
     - log
     - utils
     - yoyo.ini
-    - readme.migrations.md >> requirements.txt
+    - readme.migrations.md >> readme.md
     - .gitignore
     - docker-compose.etl.dev.yaml >> docker-compose.dev.yaml
     - dependencies\requirements.etl.txt >> requirements.txt
 
   api:
+    - makefile
     - database
     - docker-compose.api.dev.yaml >> docker-compose.dev.yaml
     - Dockerfile
@@ -29,3 +41,4 @@ templates:
     - .dockerignore
     - yoyo.ini
     - dependencies\requirements.api.txt >> requirements.txt
+    - readme.default.md >> readme.md
