@@ -65,4 +65,4 @@ def main() -> None:
             else:
                 os.remove(f"{project_final_path}\\{ex_file}")
 
-main()
+    print(f"Project: {project_name} created.\nProject path: {project_final_path}.\nTemplate used: {args.template}.")
