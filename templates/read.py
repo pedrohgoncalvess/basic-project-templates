@@ -10,6 +10,7 @@ def get_template_items(template_name:str) -> list[str]:
         data = yaml.safe_load(file)
         return data['templates'].get(template_name, [])
 
+
 def parse_template_items(items: list[str]) -> Tuple[list, list]:
     new_items = []
     rem_items = []
