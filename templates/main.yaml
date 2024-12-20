@@ -8,6 +8,8 @@ templates:
     - readmes\readme.default.md >> readme.md
     - dependencies\requirements.default.txt >> requirements.txt
     - .flake8
+    - .gitignore
+    - tests
 
   analytics-ml:
     - makefile
@@ -20,6 +22,7 @@ templates:
     - dependencies\requirements.ml.txt >> requirements.txt
     - .gitignore
     - .flake8
+    - tests
 
   etl:
     - makefile
@@ -33,6 +36,7 @@ templates:
     - docker\docker-compose.etl.dev.yaml >> docker-compose.dev.yaml
     - dependencies\requirements.etl.txt >> requirements.txt
     - .flake8
+    - tests
 
   api:
     - makefile
@@ -46,3 +50,4 @@ templates:
     - dependencies\requirements.api.txt >> requirements.txt
     - readmes\readme.default.md >> readme.md
     - .flake8
+    - tests
