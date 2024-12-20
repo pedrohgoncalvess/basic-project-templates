@@ -5,8 +5,9 @@ templates:
     - .env
     - .env.example
     - utils
-    - readme.default.md >> readme.md
+    - readmes\readme.default.md >> readme.md
     - dependencies\requirements.default.txt >> requirements.txt
+    - .flake8
 
   analytics-ml:
     - makefile
@@ -15,9 +16,10 @@ templates:
     - notebooks
     - .env
     - .env.example
-    - readme.ml.md >> readme.md
+    - readmes\readme.ml.md >> readme.md
     - dependencies\requirements.ml.txt >> requirements.txt
     - .gitignore
+    - .flake8
 
   etl:
     - makefile
@@ -26,19 +28,21 @@ templates:
     - log
     - utils
     - yoyo.ini
-    - readme.migrations.md >> readme.md
+    - readmes\readme.migrations.md >> readme.md
     - .gitignore
-    - docker-compose.etl.dev.yaml >> docker-compose.dev.yaml
+    - docker\docker-compose.etl.dev.yaml >> docker-compose.dev.yaml
     - dependencies\requirements.etl.txt >> requirements.txt
+    - .flake8
 
   api:
     - makefile
     - database
-    - docker-compose.api.dev.yaml >> docker-compose.dev.yaml
-    - Dockerfile
     - app
     - log
-    - .dockerignore
+    - docker\Dockerfile
+    - docker\docker-compose.api.dev.yaml >> docker-compose.dev.yaml
+    - docker\.dockerignore
     - yoyo.ini
     - dependencies\requirements.api.txt >> requirements.txt
-    - readme.default.md >> readme.md
+    - readmes\readme.default.md >> readme.md
+    - .flake8
