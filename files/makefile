@@ -1,4 +1,4 @@
-PYTHON_VERSION = 3.11.0
+PYTHON_VERSION = 3.12.6
 VENV = .venv
 
 ifeq ($(OS),Windows_NT)
