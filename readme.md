@@ -6,7 +6,7 @@ This Python Project Generator is a command-line tool that helps you quickly crea
 
 ## Prerequisites
 
-- Python 3.9+
+- Python 3.10+
 - pip
 - virtualenv (recommended)
 
@@ -15,8 +15,8 @@ This Python Project Generator is a command-line tool that helps you quickly crea
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/your-username/project-generator.git
-cd project-generator
+git clone https://github.com/pedrohgoncalvess/template-generator.git
+cd template-generator
 ```
 
 ### 2. Create Virtual Environment
@@ -123,7 +123,7 @@ pytest tests/
 
 ## License
 
-[Specify your license, e.g., MIT]
+[Apache License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0.html)
 
 ## Support
 
