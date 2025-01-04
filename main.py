@@ -21,6 +21,9 @@ def main() -> None:
     project_path = os.path.abspath(args.path)
 
     project_final_path = f"{project_path}\\{project_name}"
+    
+    if os.path.exists(project_final_path):
+        raise FileExistsError(f"Path {project_final_path} already exists.")
 
     files = get_template_items(args.template.lower())
 
@@ -41,7 +44,7 @@ def main() -> None:
                     subprocess.run(tt_commands)
                     continue
         
-        os.makedirs(project_final_path, exist_ok=False)
+        os.makedirs(project_final_path, exist_ok=True)
         if type(file) is dict:
             original_name = list(file.keys())[0]
             new_name = list(file.values())[0]
