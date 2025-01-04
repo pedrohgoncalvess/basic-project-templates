@@ -1,80 +1,74 @@
 PYTHON_VERSION = 3.12.6
 VENV = .venv
+UV_INSTALLER = uv-installer-latest.exe
 
 ifeq ($(OS),Windows_NT)
     PYTHON = python
     PIP = $(VENV)\Scripts\pip
     PYTHON_VENV = $(VENV)\Scripts\python
+    UV = uv.exe
     NULL_OUTPUT = >nul 2>&1
-    PYTHON_INSTALLER = python-$(PYTHON_VERSION)-amd64.exe
-    DOWNLOAD_URL = https://www.python.org/ftp/python/$(PYTHON_VERSION)/$(PYTHON_INSTALLER)
+    UV_DOWNLOAD_URL = https://uv.wtf/releases/latest/windows/$(UV_INSTALLER)
 else
     PYTHON = python3
     PIP = $(VENV)/bin/pip
     PYTHON_VENV = $(VENV)/bin/python
+    UV = uv
     NULL_OUTPUT = >/dev/null 2>&1
+    UV_DOWNLOAD_URL = https://uv.wtf/releases/latest/linux/uv
 endif
 
-.PHONY: setup run clean check-python install-python create-venv
+.PHONY: setup run clean check-uv install-uv create-venv
 
-check-python:
-	@echo Checking Python installation...
+check-uv:
+	@echo Checking UV installation...
 ifeq ($(OS),Windows_NT)
-	@where python $(NULL_OUTPUT) || (echo Python not found. Installing... && $(MAKE) install-python)
+	@where $(UV) $(NULL_OUTPUT) || (echo UV not found. Installing... && $(MAKE) install-uv)
 else
-	@which python3 $(NULL_OUTPUT) || (echo Python not found. Please install Python $(PYTHON_VERSION))
+	@which $(UV) $(NULL_OUTPUT) || (echo UV not found. Installing... && $(MAKE) install-uv)
 endif
 
-install-python:
+install-uv:
+	@echo Downloading UV installer...
 ifeq ($(OS),Windows_NT)
-	@echo Downloading Python $(PYTHON_VERSION)
-	@certutil -urlcache -f $(DOWNLOAD_URL) $(PYTHON_INSTALLER)
-	@echo Installing Python $(PYTHON_VERSION)
-	@$(PYTHON_INSTALLER) /quiet InstallAllUsers=1 PrependPath=1 DefaultJustForMe=0
-	@echo Cleaning installer
-	@del $(PYTHON_INSTALLER)
-	@echo Python successfully installed
-	@timeout /t 5 /nobreak $(NULL_OUTPUT)
+	@curl -Lo $(UV_INSTALLER) $(UV_DOWNLOAD_URL)
+	@echo Installing UV...
+	@$(UV_INSTALLER) /quiet
+	@del $(UV_INSTALLER)
 else
-	@echo Please install Python $(PYTHON_VERSION) using your system's package manager:
-	@echo For Ubuntu/Debian: sudo apt-get install python$(PYTHON_VERSION)
-	@echo For MacOS: brew install python@$(PYTHON_VERSION)
-	@exit 1
+	@curl -Lo $(UV) $(UV_DOWNLOAD_URL)
+	@chmod +x $(UV)
+	@mv $(UV) /usr/local/bin/
 endif
+	@echo UV successfully installed!
 
-create-venv:
+create-venv: check-uv
 	@echo Checking if virtual environment exists...
 ifeq ($(OS),Windows_NT)
-	@if exist $(VENV) (echo Virtual environment already exists. Skipping creation.) else ( \
-		echo Creating new virtual environment... && \
-		$(PYTHON) -m venv $(VENV) && \
-		echo Checking pip... && \
-		$(PYTHON_VENV) -m ensurepip --upgrade && \
-		echo Updating pip... && \
-		$(PYTHON_VENV) -m pip install --upgrade pip && \
+	@if exist $(VENV) ( \
+		echo Virtual environment already exists. Skipping creation. \
+	) else ( \
+		echo Creating new virtual environment with UV... && \
+		$(UV) venv $(VENV) --python $(PYTHON_VERSION) && \
 		echo Virtual environment successfully created! \
 	)
 else
 	@if [ -d $(VENV) ]; then \
 		echo Virtual environment already exists. Skipping creation.; \
 	else \
-		echo Creating new virtual environment... && \
-		$(PYTHON) -m venv $(VENV) && \
-		echo Checking pip... && \
-		$(PYTHON_VENV) -m ensurepip --upgrade && \
-		echo Updating pip... && \
-		$(PYTHON_VENV) -m pip install --upgrade pip && \
+		echo Creating new virtual environment with UV... && \
+		$(UV) venv $(VENV) --python $(PYTHON_VERSION) && \
 		echo Virtual environment successfully created!; \
 	fi
 endif
 
-setup: check-python create-venv
-	@echo Installing dependencies...
-	@$(PIP) install -r requirements.txt
-	@echo Setup completed!
+setup: create-venv
+	@echo Installing dependencies with UV...
+	@$(UV) sync
+	@echo Setup completed with UV!
 
 run: setup
-	@$(PYTHON_VENV) main.py
+	@$(UV) run main.py
 
 clean:
 ifeq ($(OS),Windows_NT)
