@@ -10,11 +10,22 @@ def get_template_items(template_name:str) -> list[str]:
         data = yaml.safe_load(file)
         return data['templates'].get(template_name, [])
 
+        
+def get_possible_templates() -> list[str]:
+    with open(f"{project_root}\\templates\\main.yaml", 'r') as file:
+        data = yaml.safe_load(file)
+        return data['templates'].keys()
+
 
 def parse_template_items(items: list[str]) -> Tuple[list, list]:
     new_items = []
     rem_items = []
     for item in items:
+        if item.endswith("**"):
+            command = item.replace("**", "")
+            new_items.append(("command", command.split(" ")))
+            continue
+
         if item.endswith("!"):
             rem_items.append(item.replace("!", ""))
             continue

@@ -11,7 +11,7 @@ templates:
     - .gitignore
     - tests
 
-  analytics-ml:
+  ml:
     - makefile
     - data
     - log
@@ -39,15 +39,4 @@ templates:
     - tests
 
   api:
-    - makefile
-    - database
-    - app
-    - log
-    - docker\Dockerfile
-    - docker\docker-compose.api.dev.yaml >> docker-compose.dev.yaml
-    - docker\.dockerignore
-    - yoyo.ini
-    - dependencies\requirements.api.txt >> requirements.txt
-    - readmes\readme.default.md >> readme.md
-    - .flake8
-    - tests
+    - git clone https://github.com/pedrohgoncalvess/fastapi-pg-template $$project_final_path$$**
