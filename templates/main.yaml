@@ -5,11 +5,13 @@ templates:
     - .env
     - .env.example
     - utils
-    - readmes\readme.default.md >> readme.md
-    - dependencies\requirements.default.txt >> requirements.txt
+    - readmes\readme.default.md >> README.MD
+    - dependencies\pyproject.default.toml >> pyproject.toml
     - .flake8
+    - dependencies\.python-version >> .python-version
     - .gitignore
     - tests
+    - LICENCE
 
   ml:
     - makefile
@@ -18,11 +20,13 @@ templates:
     - notebooks
     - .env
     - .env.example
-    - readmes\readme.ml.md >> readme.md
-    - dependencies\requirements.ml.txt >> requirements.txt
+    - readmes\readme.ml.md >> README.MD
+    - dependencies\pyproject.ml.toml >> pyproject.toml
     - .gitignore
     - .flake8
     - tests
+    - dependencies\.python-version >> .python-version
+    - LICENCE
 
   etl:
     - makefile
@@ -31,12 +35,14 @@ templates:
     - log
     - utils
     - yoyo.ini
-    - readmes\readme.migrations.md >> readme.md
+    - readmes\readme.migrations.md >> README.MD
     - .gitignore
     - docker\docker-compose.etl.dev.yaml >> docker-compose.dev.yaml
-    - dependencies\requirements.etl.txt >> requirements.txt
+    - dependencies\pyproject.etl.toml >> pyproject.toml
     - .flake8
     - tests
+    - dependencies\.python-version >> .python-version
+    - LICENCE
 
   api:
     - git clone https://github.com/pedrohgoncalvess/fastapi-pg-template $$project_final_path$$**
