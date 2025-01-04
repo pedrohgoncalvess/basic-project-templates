@@ -1,0 +1,16 @@
+[project]
+name = "default"
+version = "0.0.1"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "python-dotenv==1.0.1",
+    "flake8==7.1.1",
+    "flake8-quotes==3.4.0",
+    "flake8-bugbear==24.12.12",
+    "flake8-docstrings==1.7.0",
+    "pep8-naming==0.14.1",
+    "mccabe==0.7.0",
+    "pytest==8.3.4"
+]
