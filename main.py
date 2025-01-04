@@ -21,7 +21,6 @@ def main() -> None:
     project_path = os.path.abspath(args.path)
 
     project_final_path = f"{project_path}\\{project_name}"
-    os.makedirs(project_final_path, exist_ok=False)
 
     files = get_template_items(args.template.lower())
 
