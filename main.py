@@ -2,8 +2,9 @@ import argparse
 import os
 import shutil
 import time
+import subprocess
 
-from templates.read import get_template_items, parse_template_items
+from templates.read import get_template_items, parse_template_items, get_possible_templates
 
 
 def main() -> None:
@@ -20,18 +21,28 @@ def main() -> None:
     project_path = os.path.abspath(args.path)
 
     project_final_path = f"{project_path}\\{project_name}"
-
     os.makedirs(project_final_path, exist_ok=False)
 
     files = get_template_items(args.template.lower())
 
     if not files:
-        raise ValueError(f"Template {args.template} not exists.")
-
+        existing_templates = get_possible_templates()
+        raise ValueError(f"Template {args.template} not exists.\nExiting templates are: {', '.join(existing_templates)}")
+    
     in_files, ex_files = parse_template_items(files)
-
-    print(f"Generating {args.template.upper()} template...")
+    
+    print(f"Generating {project_name} project...")
     for file in in_files:
+        if type(file) is tuple:
+            tt_commands = [
+                    c.replace("$$project_name$$", project_name).replace("$$project_final_path$$", project_final_path) for c in file[1]
+            ]
+            match file[0]:
+                case "command":
+                    subprocess.run(tt_commands)
+                    continue
+        
+        os.makedirs(project_final_path, exist_ok=False)
         if type(file) is dict:
             original_name = list(file.keys())[0]
             new_name = list(file.values())[0]
@@ -40,9 +51,8 @@ def main() -> None:
                 shutil.copytree(f"files\\{original_name}", f"{project_final_path}\\{new_name}")
             else:
                 shutil.copy(f"files\\{original_name}", f"{project_final_path}\\{new_name}")
-
             continue
-
+        
         if os.path.isdir(f"files\\{file}"):
             shutil.copytree(f"files\\{file}", f"{project_final_path}\\{file}")
         else:
