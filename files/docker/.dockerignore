@@ -1,5 +1,0 @@
-.venv
-.env.prod
-*.log
-**/__pycache__
-database/migrations
