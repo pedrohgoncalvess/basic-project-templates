@@ -1,4 +1,4 @@
-FROM python:3.10-slim
+FROM python:3.12-slim
 
 ENV PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1 \
@@ -18,9 +18,5 @@ COPY . .
 RUN chown -R appuser:appuser /app
 
 USER appuser
-
-# Optional
-# HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 \
-#    CMD curl -f http://localhost:8000/health || exit 1
 
 CMD ["sh", "-c", "python main.py"]
