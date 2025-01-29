@@ -3,6 +3,10 @@ import os
 import shutil
 import time
 import subprocess
+import sys
+import pyperclip
+
+sys.path.append('.')
 
 from templates.read import get_template_items, parse_template_items, get_possible_templates
 
@@ -78,3 +82,9 @@ def main() -> None:
                 os.remove(f"{project_final_path}\\{ex_file}")
 
     print(f"Project: {project_name} created.\nProject path: {project_final_path}.\nTemplate used: {args.template}.")
+    print(f"Project config was copied to the copy board.")
+    pyperclip.copy(f"""cd "{project_final_path}" && make setup""")
+    
+    
+if __name__ == '__main__':
+    main()
