@@ -57,7 +57,7 @@ npt --name my-project --path /path/to/projects
 - `default`: Standard Python project structure
 - `api`: API-focused project setup
 - `etl`: Extract, Transform, Load project structure
-- `analytics-ml`: Machine Learning and Analytics project template
+- `ml`: Machine Learning and Analytics project template
 
 ## Example
 
