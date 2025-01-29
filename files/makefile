@@ -9,6 +9,7 @@ ifeq ($(OS),Windows_NT)
     UV = uv.exe
     NULL_OUTPUT = >nul 2>&1
     UV_DOWNLOAD_URL = https://uv.wtf/releases/latest/windows/$(UV_INSTALLER)
+    EXPORT_ENV = set UV_LINK_MODE=copy &&
 else
     PYTHON = python3
     PIP = $(VENV)/bin/pip
@@ -16,6 +17,7 @@ else
     UV = uv
     NULL_OUTPUT = >/dev/null 2>&1
     UV_DOWNLOAD_URL = https://uv.wtf/releases/latest/linux/uv
+    EXPORT_ENV = UV_LINK_MODE=copy
 endif
 
 .PHONY: setup run clean check-uv install-uv create-venv
@@ -46,29 +48,26 @@ create-venv: check-uv
 	@echo Checking if virtual environment exists...
 ifeq ($(OS),Windows_NT)
 	@if exist $(VENV) ( \
-		echo Virtual environment already exists. Skipping creation. \
-	) else ( \
-		echo Creating new virtual environment with UV... && \
-		$(UV) venv $(VENV) --python $(PYTHON_VERSION) && \
-		echo Virtual environment successfully created! \
-	)
+		echo Virtual environment already exists. Recreating... && \
+		rmdir /s /q $(VENV) \
+	) 
 else
 	@if [ -d $(VENV) ]; then \
-		echo Virtual environment already exists. Skipping creation.; \
-	else \
-		echo Creating new virtual environment with UV... && \
-		$(UV) venv $(VENV) --python $(PYTHON_VERSION) && \
-		echo Virtual environment successfully created!; \
+		echo Virtual environment already exists. Recreating... && \
+		rm -rf $(VENV); \
 	fi
 endif
+	@echo Creating new virtual environment with UV...
+	@$(EXPORT_ENV) $(UV) venv $(VENV) --python $(PYTHON_VERSION) --link-mode=copy
+	@echo Virtual environment successfully created!
 
 setup: create-venv
 	@echo Installing dependencies with UV...
-	@$(UV) sync
+	@$(EXPORT_ENV) $(UV) sync --link-mode=copy
 	@echo Setup completed with UV!
 
 run: setup
-	@$(UV) run main.py
+	@$(EXPORT_ENV) $(UV) run main.py
 
 clean:
 ifeq ($(OS),Windows_NT)
