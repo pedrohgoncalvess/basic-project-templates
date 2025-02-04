@@ -21,19 +21,15 @@ cd template-generator
 ### 2. Create Virtual Environment
 
 ```bash
-# On Windows
-python -m venv .venv
-.venv\Scripts\activate
-
-# On macOS/Linux
-python3 -m venv .venv
-source .venv/bin/activate
+uv init
 ```
 
 ### 3. Install the Package
 
 ```bash
-pip install -e .
+uv pip install .
+&&
+uv pip install -e .
 ```
 
 ## Usage
