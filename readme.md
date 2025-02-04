@@ -7,8 +7,7 @@ This Python Project Generator is a command-line tool that helps you quickly crea
 ## Prerequisites
 
 - Python 3.10+
-- pip
-- virtualenv (recommended)
+- uv
 
 ## Installation
 
@@ -83,7 +82,7 @@ npt --name my-awesome-api --template api
 - Configuration for various data sources
 - Logging and error handling
 
-### Analytics-ML Template
+### ML Template
 - Machine Learning project structure
 - Jupyter notebook integration
 - Data preprocessing scripts
@@ -105,13 +104,10 @@ git clone https://github.com/your-username/project-generator.git
 cd project-generator
 
 # Create virtual environment
-python -m venv .venv
-source .venv/bin/activate  # On Unix
-.venv\Scripts\activate     # On Windows
+uv init
 
 # Install development dependencies
-pip install -e .
-pip install -r requirements-dev.txt  # If you have dev requirements
+uv pip install -e .
 ```
 
 ## Running Tests
