@@ -7,7 +7,6 @@ templates:
     - utils
     - readmes\readme.default.md >> README.MD
     - dependencies\pyproject.default.toml >> pyproject.toml
-    - .flake8
     - dependencies\.python-version >> .python-version
     - .gitignore
     - tests
@@ -23,7 +22,6 @@ templates:
     - readmes\readme.ml.md >> README.MD
     - dependencies\pyproject.ml.toml >> pyproject.toml
     - .gitignore
-    - .flake8
     - tests
     - dependencies\.python-version >> .python-version
     - LICENCE
@@ -39,7 +37,6 @@ templates:
     - .gitignore
     - docker\docker-compose.etl.dev.yaml >> docker-compose.dev.yaml
     - dependencies\pyproject.etl.toml >> pyproject.toml
-    - .flake8
     - tests
     - dependencies\.python-version >> .python-version
     - LICENCE
