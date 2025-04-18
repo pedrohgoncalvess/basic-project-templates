@@ -18,13 +18,7 @@ git clone https://github.com/pedrohgoncalvess/template-generator.git
 cd template-generator
 ```
 
-### 2. Create Virtual Environment
-
-```bash
-uv init
-```
-
-### 3. Install the Package
+### 2. Create Virtual Environment and install necessary packages
 
 ```bash
 uv pip install .
