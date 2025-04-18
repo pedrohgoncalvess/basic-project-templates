@@ -63,7 +63,7 @@ endif
 
 setup: create-venv
 	@echo Installing dependencies with UV...
-	@$(EXPORT_ENV) $(UV) sync --link-mode=copy
+	@$(EXPORT_ENV) $(UV) sync --python $(PYTHON_VERSION) --link-mode=copy
 	@echo Setup completed with UV!
 
 run: setup
