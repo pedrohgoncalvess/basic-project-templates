@@ -1,4 +1,5 @@
 from typing import Tuple
+import re
 
 import yaml
 
@@ -17,11 +18,20 @@ def get_possible_templates() -> list[str]:
         return data['templates'].keys()
 
 
-def parse_template_items(items: list[str]) -> Tuple[list, list]:
+def parse_template_items(items: list[str]) -> Tuple[str, any, any]:
     new_items = []
     rem_items = []
+    pattern = r'f\(([^)]+)\)\s*>\s*((?:[^,]+(?:,\s*|$))+)'
     for item in items:
-        if item.endswith("**"):
+        match = re.match(pattern, item)
+        if match:
+            function_name = match.group(1).strip()
+            args_string = match.group(2).strip()
+            args = [arg.strip() for arg in args_string.split(',')]
+
+            return "function", function_name, args
+
+        if item.endswith("**"): #TODO: Refac this pattern
             command = item.replace("**", "")
             new_items.append(("command", command.split(" ")))
             continue
@@ -37,4 +47,4 @@ def parse_template_items(items: list[str]) -> Tuple[list, list]:
 
         new_items.append(item)
 
-    return new_items, rem_items
+    return "normal", new_items, rem_items
