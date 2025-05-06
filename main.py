@@ -1,14 +1,15 @@
 import argparse
+import inspect
 import os
 import shutil
 import time
-import subprocess
 import sys
 import pyperclip
 
 sys.path.append('.')
 
 from templates.read import get_template_items, parse_template_items, get_possible_templates
+from services import * #NECESSARY FOR IMPORT CUSTOM FUNCTIONS
 
 
 def main() -> None:
@@ -35,51 +36,70 @@ def main() -> None:
         existing_templates = get_possible_templates()
         raise ValueError(f"Template {args.template} not exists.\nExiting templates are: {', '.join(existing_templates)}")
     
-    in_files, ex_files = parse_template_items(files)
+    type_, args1, args2 = parse_template_items(files)
     
     print(f"Generating {project_name} project...")
-    for file in in_files:
-        if type(file) is tuple:
-            tt_commands = [
-                    c.replace("$$project_name$$", project_name).replace("$$project_final_path$$", project_final_path) for c in file[1]
-            ]
-            match file[0]:
-                case "command":
-                    subprocess.run(tt_commands)
-                    continue
-        
-        os.makedirs(project_final_path, exist_ok=True)
-        if type(file) is dict:
-            original_name = list(file.keys())[0]
-            new_name = list(file.values())[0]
 
-            if os.path.isdir(f"files\\{original_name}"):
-                shutil.copytree(f"files\\{original_name}", f"{project_final_path}\\{new_name}")
+    if type_ == "function":
+        func_name = args1
+        func_args = args2
+
+        tt_func_args = [
+            arg
+            .replace("$$project_name$$", project_name)
+            .replace("$$project_final_path$$", project_final_path) for arg in func_args
+        ]
+
+        func = globals()[func_name]
+
+        sig = inspect.signature(func)
+        required_params = 0
+
+        for param in sig.parameters.values():
+            if param.default == inspect.Parameter.empty and param.kind not in (
+                    inspect.Parameter.VAR_POSITIONAL, inspect.Parameter.VAR_KEYWORD):
+                required_params += 1
+
+        func(*tt_func_args)
+
+
+    if type_ == "normal":
+        in_files = args1
+        ex_files = args2
+
+        for file in in_files:
+            os.makedirs(project_final_path, exist_ok=True)
+            if isinstance(file, dict):
+                original_name = list(file.keys())[0]
+                new_name = list(file.values())[0]
+
+                if os.path.isdir(f"files\\{original_name}"):
+                    shutil.copytree(f"files\\{original_name}", f"{project_final_path}\\{new_name}")
+                else:
+                    shutil.copy(f"files\\{original_name}", f"{project_final_path}\\{new_name}")
+                continue
+
+            if os.path.isdir(f"files\\{file}"):
+                shutil.copytree(f"files\\{file}", f"{project_final_path}\\{file}")
             else:
-                shutil.copy(f"files\\{original_name}", f"{project_final_path}\\{new_name}")
-            continue
-        
-        if os.path.isdir(f"files\\{file}"):
-            shutil.copytree(f"files\\{file}", f"{project_final_path}\\{file}")
-        else:
-            shutil.copy(f"files\\{file}", f"{project_final_path}\\{file}")
+                shutil.copy(f"files\\{file}", f"{project_final_path}\\{file}")
 
-    if ex_files:
-        print("Excluding unnecessary folders and files.")
-        for ex_file in ex_files:
-            if os.path.isdir(f"{project_final_path}\\{ex_file}"):
-                attempt = 0
-                try:
-                    shutil.rmtree(f"{project_final_path}\\{ex_file}")
-                except PermissionError:
-                    if attempt >= 3:
-                        raise PermissionError(f"Could not delete folder: {ex_file}")
-                    else:
-                        attempt += 1
-                        time.sleep(2)
+        if ex_files:
+            print("Excluding unnecessary folders and files.")
+            for ex_file in ex_files:
+                if os.path.isdir(f"{project_final_path}\\{ex_file}"):
+                    attempt = 0
+                    try:
+                        shutil.rmtree(f"{project_final_path}\\{ex_file}")
+                    except PermissionError:
+                        if attempt >= 3:
+                            raise PermissionError(f"Could not delete folder: {ex_file}")
+                        else:
+                            attempt += 1
+                            time.sleep(2)
 
-            else:
-                os.remove(f"{project_final_path}\\{ex_file}")
+                else:
+                    os.remove(f"{project_final_path}\\{ex_file}")
 
     print(f"Project: {project_name} created.\nProject path: {project_final_path}.\nTemplate used: {args.template}.")
     print(f"Project config was copied to the copy board.")
