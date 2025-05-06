@@ -42,4 +42,4 @@ templates:
     - LICENCE
 
   api:
-    - git clone https://github.com/pedrohgoncalvess/fastapi-pg-template $$project_final_path$$**
+    - f(download_gh_repo) > pedrohgoncalvess, fastapi-pg-template, $$project_final_path$$, master

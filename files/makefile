@@ -9,7 +9,7 @@ ifeq ($(OS),Windows_NT)
     UV = uv.exe
     NULL_OUTPUT = >nul 2>&1
     UV_DOWNLOAD_URL = https://uv.wtf/releases/latest/windows/$(UV_INSTALLER)
-    EXPORT_ENV = set UV_LINK_MODE=copy &&
+    EXPORT_ENV = set UV_LINK_MODE=copy&&
 else
     PYTHON = python3
     PIP = $(VENV)/bin/pip
@@ -50,7 +50,7 @@ ifeq ($(OS),Windows_NT)
 	@if exist $(VENV) ( \
 		echo Virtual environment already exists. Recreating... && \
 		rmdir /s /q $(VENV) \
-	) 
+	)
 else
 	@if [ -d $(VENV) ]; then \
 		echo Virtual environment already exists. Recreating... && \
@@ -58,16 +58,35 @@ else
 	fi
 endif
 	@echo Creating new virtual environment with UV...
-	@$(EXPORT_ENV) $(UV) venv $(VENV) --python $(PYTHON_VERSION) --link-mode=copy
+	@$(UV) venv $(VENV) --python $(PYTHON_VERSION) --link-mode=copy
 	@echo Virtual environment successfully created!
 
-setup: create-venv
-	@echo Installing dependencies with UV...
-	@$(EXPORT_ENV) $(UV) sync --python $(PYTHON_VERSION) --link-mode=copy
-	@echo Setup completed with UV!
+install-deps: create-venv
+	@echo Checking for requirements.txt...
+ifeq ($(OS),Windows_NT)
+	@if exist requirements.txt ( \
+		echo Installing dependencies from requirements.txt... && \
+		$(UV) pip install -r requirements.txt --link-mode=copy \
+	) else ( \
+		echo No requirements.txt found. Using UV sync... && \
+		$(UV) sync --link-mode=copy \
+	)
+else
+	@if [ -f requirements.txt ]; then \
+		echo Installing dependencies from requirements.txt... && \
+		$(EXPORT_ENV) $(UV) pip install -r requirements.txt; \
+	else \
+		echo No requirements.txt found. Using UV sync... && \
+		$(EXPORT_ENV) $(UV) sync --link-mode=copy; \
+	fi
+endif
+	@echo Dependencies installed successfully!
+
+setup: install-deps
+	@echo Setup completed!
 
 run: setup
-	@$(EXPORT_ENV) $(UV) run main.py
+	@$(PYTHON_VENV) main.py
 
 clean:
 ifeq ($(OS),Windows_NT)
