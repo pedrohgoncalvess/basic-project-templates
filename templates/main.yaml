@@ -42,4 +42,4 @@ templates:
     - LICENCE
 
   api:
-    - f(download_gh_repo) > pedrohgoncalvess, fastapi-pg-template, $$project_final_path$$, master
+    - f(download_gh_repo) > pedrohgoncalvess, fastapi-pg-template, $$project_final_path$$, main
