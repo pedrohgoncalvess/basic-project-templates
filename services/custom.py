@@ -2,11 +2,12 @@ import zipfile
 import io
 import os
 import shutil
+import re
 
 import requests
 
 
-def download_gh_repo(repo_owner:str, repo_name:str, destination_path:str, branch:str) -> None:
+def download_gh_repo(repo_owner:str, repo_name:str, destination_path:str, branch:str = "main") -> None:
     """
     This function downloads a repository as a ZIP file from GitHub, extracts it,
     and places the contents in the specified destination directory.
@@ -25,7 +26,8 @@ def download_gh_repo(repo_owner:str, repo_name:str, destination_path:str, branch
 
     zip_url = f"https://github.com/{repo_owner}/{repo_name}/archive/refs/heads/{branch}.zip"
 
-    print(f"Downloading FastAPI template...")
+    styled_repo_name = re.sub(r'[_-]', ' ', repo_name).title()
+    print(f"Downloading {styled_repo_name} template...")
     response = requests.get(zip_url)
     response.raise_for_status()
 
