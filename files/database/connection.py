@@ -5,8 +5,8 @@ Check the .env file and ensure credentials are correctly set.
 import psycopg
 from psycopg import AsyncConnection, AsyncCursor
 
-from log.config import logger
-from utils.env_var import get_env_var
+from log import logger
+from utils import get_env_var
 
 
 class PgConnection:
@@ -29,9 +29,9 @@ class PgConnection:
                 dbname=self._db_name_
             )
             self.cursor = await self._connection_.cursor()
-            logger.info(f"New connection. ID: {self._connection_.fileno()}")
+            await logger.info("Database", "Connection", f"New connection. ID: {self._connection_.fileno()}")
         except Exception as error:
-            logger.error(f"Error while connecting to database: {error}")
+            await logger.error("Database", f"Error while connecting to database: {error}")
 
     async def close(self):
         if self._connection_:
