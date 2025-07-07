@@ -43,10 +43,11 @@ npt --name my-project --path /path/to/projects
 
 ### Available Templates
 
-- `default`: Standard Python project structure
-- `api`: API-focused project setup
-- `etl`: Extract, Transform, Load project structure
-- `ml`: Machine Learning and Analytics project template
+- `default`: Standard Python project structure.
+- `api`: FAST API project structure.
+- `etl-airflow`: Data engineering project structure with Airflow.
+- `etl-prefect`: Data engineering project structure with Prefect.
+- `ml`: Machine Learning and Analytics project template.
 
 ## Example
 

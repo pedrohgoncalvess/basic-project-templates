@@ -1,3 +1,25 @@
+""" Asynchronous Relational Logger Module
+
+This module provides a structured logging system that writes logs in a relational format,
+similar to database records with consistent delimiters.
+The logs are stored in files organized by date, making them easy to parse and analyze.
+
+Features:
+- Asynchronous file operations using aiofiles
+- Date-based log file partitioning
+- Configurable log formats and separators
+- Environment-aware logging
+- Support for different log levels (INFO, ERROR)
+
+Usage:
+from log import logger
+
+# Log information
+await logger.info("ModuleName", "OperationType", "Detailed message")
+
+# Log errors
+await logger.error("ModuleName", "ErrorType", "Exception details")
+"""
 import re
 import os
 from datetime import datetime
@@ -11,7 +33,7 @@ from utils.path_config import project_root
 
 class RelationalLogger:
     def __init__(self, log_format: str | None = None):
-        self._log_file_dir_ = get_env_var("LOG_PATH") if get_env_var("LOG_PATH") is not None else f"{project_root}/logs/"
+        self._log_file_dir_ = get_env_var("LOG_PATH") if get_env_var("LOG_PATH") is not None else f"{project_root}/log/"
         self._log_file_format_ = f".{re.sub(r'[^a-zA-Z0-9]', '', log_format)}.log" if log_format else ".log"
         self.partition_by = datetime.now().strftime("%Y_%m_%d")
         self._log_path_ = f"{self._log_file_dir_}/{self.partition_by}{self._log_file_format_}"
