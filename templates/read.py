@@ -3,7 +3,7 @@ import re
 
 import yaml
 
-from utils.path_config import project_root
+from utils import project_root
 
 
 def get_template_items(template_name:str) -> list[str]:
@@ -22,6 +22,7 @@ def parse_template_items(items: list[str]) -> Tuple[str, any, any]:
     new_items = []
     rem_items = []
     pattern = r'f\(([^)]+)\)\s*>\s*((?:[^,]+(?:,\s*|$))+)'
+
     for item in items:
         match = re.match(pattern, item)
         if match:
