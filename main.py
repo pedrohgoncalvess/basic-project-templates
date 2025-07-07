@@ -4,12 +4,13 @@ import os
 import shutil
 import time
 import sys
+
 import pyperclip
 
 sys.path.append('.')
 
 from templates.read import get_template_items, parse_template_items, get_possible_templates
-from services import * #NECESSARY FOR IMPORT CUSTOM FUNCTIONS
+from services import * # Necessary for import custom functions
 
 
 def main() -> None:
