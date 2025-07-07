@@ -26,7 +26,7 @@ templates:
     - dependencies\.python-version >> .python-version
     - LICENCE
 
-  etl:
+  etl-airflow:
     - makefile
     - database
     - database\models!
@@ -35,11 +35,14 @@ templates:
     - yoyo.ini
     - readmes\readme.migrations.md >> README.MD
     - .gitignore
-    - docker\docker-compose.etl.dev.yaml >> docker-compose.dev.yaml
+    - docker\docker-compose.etl.airflow.dev.yaml >> docker-compose.dev.yaml
     - dependencies\pyproject.etl.toml >> pyproject.toml
     - tests
     - dependencies\.python-version >> .python-version
     - LICENCE
+
+  etl-prefect:
+    - f(download_gh_repo) > pedrohgoncalvess, prefect-template, $$project_final_path$$, master
 
   api:
     - f(download_gh_repo) > pedrohgoncalvess, fastapi-pg-template, $$project_final_path$$, main
