@@ -36,7 +36,7 @@ templates:
     - readmes\readme.migrations.md >> README.MD
     - .gitignore
     - docker\docker-compose.etl.airflow.dev.yaml >> docker-compose.dev.yaml
-    - dependencies\pyproject.etl.toml >> pyproject.toml
+    - dependencies\pyproject.etl.airflow.toml >> pyproject.toml
     - tests
     - dependencies\.python-version >> .python-version
     - LICENCE
