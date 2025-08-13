@@ -7,10 +7,10 @@ import sys
 
 import pyperclip
 
-sys.path.append('.')
+sys.path.append('..')
 
-from templates.read import get_template_items, parse_template_items, get_possible_templates
-from services import * # Necessary for import custom functions
+from template_generator.templates.read import get_template_items, parse_template_items, get_possible_templates
+from template_generator.services import * # Necessary for import custom functions
 
 
 def main() -> None:

@@ -3,7 +3,7 @@ import re
 
 import yaml
 
-from utils import project_root
+from template_generator.utils import project_root
 
 
 def get_template_items(template_name:str) -> list[str]:
