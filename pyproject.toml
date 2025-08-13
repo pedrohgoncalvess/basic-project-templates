@@ -10,6 +10,7 @@ readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
     "altgraph==0.17.4",
+    "build>=1.2.2.post1",
     "importlib_metadata==8.5.0",
     "packaging==24.2",
     "pefile==2023.2.7",
@@ -31,4 +32,4 @@ dependencies = [
 Homepage = "https://github.com/pedrohgoncalvess/basic-project-templates"
 
 [project.scripts]
-npt = "main:main"
+npt = "template_generator.main:main"
