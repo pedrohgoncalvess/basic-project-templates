@@ -1,9 +1,10 @@
-PYTHON_VERSION = 3.12.6
+PYTHON_VERSION ?= 3.12.6
+PYTHON_PATH ?=        # Optional: ex. /usr/local/bin/python3.13t
 VENV = .venv
 UV_INSTALLER = uv-installer-latest.exe
 
 ifeq ($(OS),Windows_NT)
-    PYTHON = python
+    PYTHON_DEFAULT = python
     PIP = $(VENV)\Scripts\pip
     PYTHON_VENV = $(VENV)\Scripts\python
     UV = uv.exe
@@ -11,7 +12,7 @@ ifeq ($(OS),Windows_NT)
     UV_DOWNLOAD_URL = https://uv.wtf/releases/latest/windows/$(UV_INSTALLER)
     EXPORT_ENV = set UV_LINK_MODE=copy&&
 else
-    PYTHON = python3
+    PYTHON_DEFAULT = python3
     PIP = $(VENV)/bin/pip
     PYTHON_VENV = $(VENV)/bin/python
     UV = uv
@@ -20,7 +21,7 @@ else
     EXPORT_ENV = UV_LINK_MODE=copy
 endif
 
-.PHONY: setup run clean check-uv install-uv create-venv
+.PHONY: setup run clean check-uv install-uv check-python create-venv install-deps
 
 check-uv:
 	@echo Checking UV installation...
@@ -44,7 +45,25 @@ else
 endif
 	@echo UV successfully installed!
 
-create-venv: check-uv
+check-python:
+	@echo Checking Python...
+ifeq ($(strip $(PYTHON_PATH)),)
+	@if ! command -v $(PYTHON_DEFAULT) $(NULL_OUTPUT); then \
+		echo "$(PYTHON_DEFAULT) not found. Will use UV to install Python $(PYTHON_VERSION)."; \
+	else \
+		echo "Found Python: $$($(PYTHON_DEFAULT) --version)"; \
+	fi
+else
+	@if [ ! -x "$(PYTHON_PATH)" ]; then \
+		echo "ERROR: Provided PYTHON_PATH '$(PYTHON_PATH)' not found or not executable."; \
+		exit 1; \
+	else \
+		echo "Using provided Python path: $(PYTHON_PATH)"; \
+		"$(PYTHON_PATH)" --version; \
+	fi
+endif
+
+create-venv: check-uv check-python
 	@echo Checking if virtual environment exists...
 ifeq ($(OS),Windows_NT)
 	@if exist $(VENV) ( \
@@ -58,7 +77,15 @@ else
 	fi
 endif
 	@echo Creating new virtual environment with UV...
-	@$(UV) venv $(VENV) --python $(PYTHON_VERSION) --link-mode=copy
+ifeq ($(strip $(PYTHON_PATH)),)
+	@if command -v $(PYTHON_DEFAULT) $(NULL_OUTPUT); then \
+		$(UV) venv $(VENV) --python $(PYTHON_DEFAULT) --link-mode=copy; \
+	else \
+		$(UV) venv $(VENV) --python $(PYTHON_VERSION) --link-mode=copy; \
+	fi
+else
+	@$(UV) venv $(VENV) --python $(PYTHON_PATH) --link-mode=copy
+endif
 	@echo Virtual environment successfully created!
 
 install-deps: create-venv
@@ -84,9 +111,6 @@ endif
 
 setup: install-deps
 	@echo Setup completed!
-
-run: setup
-	@$(PYTHON_VENV) main.py
 
 clean:
 ifeq ($(OS),Windows_NT)
