@@ -74,16 +74,17 @@ def main() -> None:
                 original_name = list(file.keys())[0]
                 new_name = list(file.values())[0]
 
-                if os.path.isdir(f"files\\{original_name}"):
-                    shutil.copytree(f"files\\{original_name}", f"{project_final_path}\\{new_name}")
+                # TODO: Centralize project path in a variable
+                if os.path.isdir(f"template_generator\\files\\{original_name}"):
+                    shutil.copytree(f"template_generator\\files\\{original_name}", f"{project_final_path}\\{new_name}")
                 else:
-                    shutil.copy(f"files\\{original_name}", f"{project_final_path}\\{new_name}")
+                    shutil.copy(f"template_generator\\files\\{original_name}", f"{project_final_path}\\{new_name}")
                 continue
 
-            if os.path.isdir(f"files\\{file}"):
-                shutil.copytree(f"files\\{file}", f"{project_final_path}\\{file}")
+            if os.path.isdir(f"template_generator\\files\\{file}"):
+                shutil.copytree(f"template_generator\\files\\{file}", f"{project_final_path}\\{file}")
             else:
-                shutil.copy(f"files\\{file}", f"{project_final_path}\\{file}")
+                shutil.copy(f"template_generator\\files\\{file}", f"{project_final_path}\\{file}")
 
         if ex_files:
             print("Excluding unnecessary folders and files.")
@@ -104,7 +105,7 @@ def main() -> None:
 
     print(f"Project: {project_name} created.\nProject path: {project_final_path}.\nTemplate used: {args.template}.")
     print(f"Project config was copied to the copy board.")
-    pyperclip.copy(f"""cd "{project_final_path}" && make setup""")
+    pyperclip.copy(f"""cd "{project_final_path}"\nmake setup""")
     
     
 if __name__ == '__main__':
