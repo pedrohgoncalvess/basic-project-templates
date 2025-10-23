@@ -20,7 +20,8 @@ dependencies = [
     "pep8-naming==0.14.1",
     "mccabe==0.7.0",
     "pytest==8.3.4",
-    "black==25.1.0"
+    "black==25.1.0",
+    "aiofiles>=24.1.0",
 ]
 
 [tool.black]
