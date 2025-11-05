@@ -10,7 +10,7 @@ templates:
     - dependencies\.python-version >> .python-version
     - .gitignore
     - tests
-    - LICENCE
+    - LICENSE
 
   ml:
     - makefile
@@ -24,7 +24,7 @@ templates:
     - .gitignore
     - tests
     - dependencies\.python-version >> .python-version
-    - LICENCE
+    - LICENSE
 
   etl-airflow:
     - makefile
@@ -39,7 +39,7 @@ templates:
     - dependencies\pyproject.etl.toml >> pyproject.toml
     - tests
     - dependencies\.python-version >> .python-version
-    - LICENCE
+    - LICENSE
 
   etl-prefect:
     - f(download_gh_repo) > pedrohgoncalvess, prefect-template, $$project_final_path$$, master
