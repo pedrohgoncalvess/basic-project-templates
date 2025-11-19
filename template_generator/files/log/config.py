@@ -59,7 +59,7 @@ class StructuredLogger:
     def debug(func):
         @functools.wraps(func)
         async def wrapper(self, *args, **kwargs):
-            if self._env_ == "dev":
+            if self._env_.lower() == "dev":
                 string_f = reduce(lambda acc, x: f"{acc} {x}", args, "")
                 colors_set = {"error": ("\033[91m", "\033[0m"), "warn": ("\033[93m", "\033[0m"),}
                 colors = colors_set.get(func.__name__)
