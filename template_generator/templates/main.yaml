@@ -29,7 +29,6 @@ templates:
   etl-airflow:
     - makefile
     - database
-    - database\models!
     - log
     - utils
     - yoyo.ini
