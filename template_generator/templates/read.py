@@ -43,7 +43,7 @@ def parse_template_items(items: list[str]) -> Tuple[str, any, any]:
 
         if item.__contains__(">>"):
             splt_file = item.split(">>")
-            new_items.append({splt_file[0].strip():splt_file[1].strip()})
+            new_items.append((splt_file[0].strip(), splt_file[1].strip()))
             continue
 
         new_items.append(item)
