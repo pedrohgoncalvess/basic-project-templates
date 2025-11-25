@@ -33,9 +33,19 @@ from utils.env_var import get_env_var
 from utils.path_config import project_root
 
 
-class StructuredLogger:
+class StructuredLogger:  #TODO: Implement sync logging
     def __init__(self, log_format: str | None = None):
-        self._log_file_dir_ = get_env_var("LOG_PATH") if get_env_var("LOG_PATH") is not None else f"{project_root}/log/"
+        log_append_path = get_env_var("LOG_APPEND_PATH")
+        log_path = get_env_var("LOG_PATH")
+
+        self._log_append_path_ = log_append_path if log_append_path is not None else True
+        default_log_dir = f"{project_root}/log/"
+
+        if self._log_append_path_:
+            self._log_file_dir_ = f"{project_root}/{log_path}" if log_path else default_log_dir
+        else:
+            self._log_file_dir_ = log_path if log_path else default_log_dir
+
         self._log_file_format_ = f".{re.sub(r'[^a-zA-Z0-9]', '', log_format)}.log" if log_format else ".log"
         self.partition_by = datetime.now().strftime("%Y_%m_%d")
         self._log_path_ = f"{self._log_file_dir_}/{self.partition_by}{self._log_file_format_}"
@@ -46,6 +56,8 @@ class StructuredLogger:
         self.headers = ["MODE", "CREATED_AT", "MODULE", "MESSAGE", "DETAIL"]
         self.time_format = "%Y-%m-%d %H:%M:%S"
         self.format = Template(self.sep.join(f" ${h.lower()} " for h in self.headers).strip())
+
+    # TODO: Implement convertion to .parquet
 
     async def init(self):
         if not os.path.exists(self._log_file_dir_):
