@@ -57,7 +57,7 @@ if sys.platform == "win32":
     asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
 
 
-class PgConnection:
+class PgConnection:  #TODO: Implement sync connection
     def __init__(self):
         self._host_ = get_env_var("PG_HOST")
         self._port_ = get_env_var("PG_PORT")
