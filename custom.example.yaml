@@ -1,0 +1,14 @@
+projects:
+  # Basic infos of project
+  - name: example
+    path: C:\projects
+
+    files:
+      # Add your custom file set
+      add:
+        - database
+        - database/connection.py >> database/async_connection.py # >> Rename file and move file.
+
+      remove:
+        # Remove files
+        - database/migrations
