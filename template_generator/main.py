@@ -1,6 +1,7 @@
 import argparse
 import inspect
 import os
+import shutil
 import sys
 import yaml
 
@@ -23,7 +24,7 @@ def main() -> None:
     parser.add_argument("--custom", type=str, default=None, required=False,
                         help="Custom files to use.")
 
-    args = parser.parse_args()
+    args = parser.parse_args()  #TODO: Separate this main function in two functions. one for custom.yaml and another for template.
 
     custom_yaml_file = os.path.abspath(args.custom) if args.custom else None
 
@@ -44,7 +45,7 @@ def main() -> None:
         if not project_path:
             raise ValueError("Project path is required. Use the --path argument.")
 
-    project_final_path = f"{project_path}\\{project_name}"
+    project_final_path = f"{project_path}/{project_name}"
     template_generator_path = os.path.abspath(f"template_generator/files")
 
     if os.path.exists(project_final_path):
@@ -55,7 +56,6 @@ def main() -> None:
             config = yaml.safe_load(f)
 
         projects = config.get("projects")
-        print(len(projects))
 
         if not projects:
             raise ValueError("The custom YAML must have the key projects. Read the example (custom.example.yaml) in the documentation for a better understanding.")
@@ -71,11 +71,17 @@ def main() -> None:
 
             print(f"Generating {project_name} project...")
             _, tt_add_files, _ = parse_template_items(add_files)
-            copy_project_files(project_final_path, template_generator_path, tt_add_files, rem_files)
+            try:
+                copy_project_files(project_final_path, template_generator_path, tt_add_files, rem_files)
 
-            print(f"Project {project_name.upper()} created.\nProject path: {project_final_path}.\nUsing custom configuration.")
-            print(f"Project config was copied to the copy board.")
-            pyperclip.copy(f"""cd "{project_final_path}"\nmake setup""")
+                print(f"Project {project_name.upper()} created.\nProject path: {project_final_path}.\nUsing custom configuration.")
+                print(f"Project config was copied to the copy board.")
+                pyperclip.copy(f"""cd "{project_final_path}"\nmake setup""")
+            except Exception as error:
+                print(f"Project {project_name.upper()} cannot be created.")
+                print(f"Reason: {error}.")
+                print(f"Removing traces...")
+                shutil.rmtree(project_final_path)
 
     else:
         files = get_template_items(args.template.lower())
@@ -88,36 +94,42 @@ def main() -> None:
 
         print(f"Generating {project_name} project...")
 
-        if type_ == "function":
-            func_name = args1
-            func_args = args2
+        try:
+            if type_ == "function":
+                func_name = args1
+                func_args = args2
 
-            tt_func_args = [
-                arg
-                .replace("$$project_name$$", project_name)
-                .replace("$$project_final_path$$", project_final_path) for arg in func_args
-            ]
+                tt_func_args = [
+                    arg
+                    .replace("$$project_name$$", project_name)
+                    .replace("$$project_final_path$$", project_final_path) for arg in func_args
+                ]
 
-            func = globals()[func_name]
+                func = globals()[func_name]
 
-            sig = inspect.signature(func)
-            required_params = 0
+                sig = inspect.signature(func)
+                required_params = 0
 
-            for param in sig.parameters.values():
-                if param.default == inspect.Parameter.empty and param.kind not in (
-                        inspect.Parameter.VAR_POSITIONAL, inspect.Parameter.VAR_KEYWORD):
-                    required_params += 1
+                for param in sig.parameters.values():
+                    if param.default == inspect.Parameter.empty and param.kind not in (
+                            inspect.Parameter.VAR_POSITIONAL, inspect.Parameter.VAR_KEYWORD):
+                        required_params += 1
 
-            func(*tt_func_args)
+                func(*tt_func_args)
 
-        if type_ == "normal":
-            in_files = args1
-            ex_files = args2
-            copy_project_files(project_final_path, template_generator_path, in_files, ex_files)
+            if type_ == "normal":
+                in_files = args1
+                ex_files = args2
+                copy_project_files(project_final_path, template_generator_path, in_files, ex_files)
 
-        print(f"Project {project_name.upper()} created.\nProject path: {project_final_path}.\nUsing custom configuration.")
-        print(f"Project config was copied to the copy board.")
-        pyperclip.copy(f"""cd "{project_final_path}"\nmake setup""")
+            print(f"Project {project_name.upper()} created.\nProject path: {project_final_path}.\nUsing custom configuration.")
+            print(f"Project config was copied to the copy board.")
+            pyperclip.copy(f"""cd "{project_final_path}"\nmake setup""")
+        except Exception as error:
+            print(f"Project {project_name.upper()} cannot be created.")
+            print(f"Reason: {error}.")
+            print(f"Removing traces...")
+            shutil.rmtree(project_final_path)
     
     
 if __name__ == '__main__':
