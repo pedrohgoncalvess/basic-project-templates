@@ -21,9 +21,13 @@ cd template-generator
 ### 2. Create Virtual Environment and install necessary packages
 
 ```bash
-uv pip install .
-&&
-uv pip install -e .
+uv init
+uv sync
+```
+or using pip
+```
+pip -m venv .venv
+pip install -e .
 ```
 
 ## Usage
@@ -39,6 +43,9 @@ npt --name my-api-project --template api
 
 # Specify a custom path
 npt --name my-project --path /path/to/projects
+
+# Specify a custom set of files
+npt --name my-project --custom custom.example.yaml
 ```
 
 ### Available Templates
@@ -91,7 +98,7 @@ npt --name my-awesome-api --template api
 
 ```bash
 # Clone the repository
-git clone https://github.com/your-username/project-generator.git
+git clone https://github.com/pedrohgoncalvess/basic-project-templates
 cd project-generator
 
 # Create virtual environment
