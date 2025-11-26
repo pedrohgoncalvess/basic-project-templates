@@ -22,11 +22,12 @@ cd template-generator
 
 ```bash
 uv init
-uv sync
+uv pip install -e .
 ```
 or using pip
 ```
 pip -m venv .venv
+# Activate venv
 pip install -e .
 ```
 
