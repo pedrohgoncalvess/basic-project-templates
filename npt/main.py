@@ -9,7 +9,7 @@ import pyperclip
 
 sys.path.append('..')
 
-from npt.templates.read import get_template_items, parse_template_items, get_possible_templates
+from npt.templates.read import get_template_items, parse_template_items, get_possible_templates, get_templates_info
 from npt.manipulate_files import copy_files, copy_project_files
 from npt.custom import * # Necessary for import custom functions
 
@@ -23,12 +23,21 @@ def main() -> None:
                         help="Template to use.")
     parser.add_argument("--custom", type=str, default=None, required=False,
                         help="Custom files to use.")
+    parser.add_argument("--list-templates", action="store_true",
+                        help="List available templates and their descriptions.")
 
     if len(sys.argv) == 1:
         parser.print_help()
         sys.exit(0)
 
     args = parser.parse_args()  #TODO: Separate this main function in two functions. one for custom.yaml and another for template.
+
+    if args.list_templates:
+        print("Available templates:\n")
+        for name, description in get_templates_info().items():
+            print(f"  {name:<15} {description}")
+        print()
+        sys.exit(0)
 
     custom_yaml_file = os.path.abspath(args.custom) if args.custom else None
 

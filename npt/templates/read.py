@@ -6,16 +6,27 @@ import yaml
 from npt.utils import project_root
 
 
-def get_template_items(template_name:str) -> list[str]:
+def _load_templates() -> dict:
     with open(f"{project_root}\\templates\\main.yaml", 'r') as file:
-        data = yaml.safe_load(file)
-        return data['templates'].get(template_name, [])
+        return yaml.safe_load(file)['templates']
 
-        
+
+def get_template_items(template_name: str) -> list[str]:
+    templates = _load_templates()
+    template = templates.get(template_name, {})
+    return template.get("files", [])
+
+
 def get_possible_templates() -> list[str]:
-    with open(f"{project_root}\\templates\\main.yaml", 'r') as file:
-        data = yaml.safe_load(file)
-        return data['templates'].keys()
+    return list(_load_templates().keys())
+
+
+def get_templates_info() -> dict[str, str]:
+    """Return a mapping of template names to their descriptions."""
+    return {
+        name: info.get("description", "No description available.")
+        for name, info in _load_templates().items()
+    }
 
 
 def parse_template_items(items: list[str]) -> Tuple[str, any, any]:

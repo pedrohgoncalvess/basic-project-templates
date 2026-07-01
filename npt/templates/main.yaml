@@ -1,47 +1,57 @@
 templates:
   default:
-    - makefile
-    - log
-    - .env
-    - .env.example
-    - utils
-    - readmes\readme.default.md >> README.MD
-    - dependencies\pyproject.default.toml >> pyproject.toml
-    - dependencies\.python-version >> .python-version
-    - .gitignore
-    - tests
-    - LICENSE
+    description: "Basic Python project with Makefile, logging, env files, utilities, tests and pyproject.toml."
+    files:
+      - makefile
+      - log
+      - .env
+      - .env.example
+      - utils
+      - readmes\readme.default.md >> README.MD
+      - dependencies\pyproject.default.toml >> pyproject.toml
+      - dependencies\.python-version >> .python-version
+      - .gitignore
+      - tests
+      - LICENSE
 
   ml:
-    - makefile
-    - data
-    - log
-    - notebooks
-    - .env
-    - .env.example
-    - readmes\readme.ml.md >> README.MD
-    - dependencies\pyproject.ml.toml >> pyproject.toml
-    - .gitignore
-    - tests
-    - dependencies\.python-version >> .python-version
-    - LICENSE
+    description: "Machine Learning project with notebooks, data folder, dependencies for ML and basic structure."
+    files:
+      - makefile
+      - data
+      - log
+      - notebooks
+      - .env
+      - .env.example
+      - readmes\readme.ml.md >> README.MD
+      - dependencies\pyproject.ml.toml >> pyproject.toml
+      - .gitignore
+      - tests
+      - dependencies\.python-version >> .python-version
+      - LICENSE
 
   etl-airflow:
-    - makefile
-    - database
-    - log
-    - utils
-    - yoyo.ini
-    - readmes\readme.migrations.md >> README.MD
-    - .gitignore
-    - docker\docker-compose.etl.airflow.dev.yaml >> docker-compose.dev.yaml
-    - dependencies\pyproject.etl.toml >> pyproject.toml
-    - tests
-    - dependencies\.python-version >> .python-version
-    - LICENSE
+    description: "ETL project with Apache Airflow, database migrations (yoyo), Docker Compose and dependencies."
+    files:
+      - makefile
+      - database
+      - log
+      - utils
+      - yoyo.ini
+      - readmes\readme.migrations.md >> README.MD
+      - .gitignore
+      - docker\docker-compose.etl.airflow.dev.yaml >> docker-compose.dev.yaml
+      - dependencies\pyproject.etl.toml >> pyproject.toml
+      - tests
+      - dependencies\.python-version >> .python-version
+      - LICENSE
 
   etl-prefect:
-    - f(download_gh_repo) > pedrohgoncalvess, prefect-template, $$project_final_path$$, master
+    description: "ETL project based on Prefect, downloaded from a GitHub template repository."
+    files:
+      - f(download_gh_repo) > pedrohgoncalvess, prefect-template, $$project_final_path$$, master
 
   api:
-    - f(download_gh_repo) > pedrohgoncalvess, fastapi-pg-template, $$project_final_path$$, main
+    description: "API project based on FastAPI + PostgreSQL, downloaded from a GitHub template repository."
+    files:
+      - f(download_gh_repo) > pedrohgoncalvess, fastapi-pg-template, $$project_final_path$$, main
