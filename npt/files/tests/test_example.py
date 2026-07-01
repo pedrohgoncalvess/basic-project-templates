@@ -13,7 +13,7 @@ Test Categories:
 
 Usage:
     Run tests using pytest:
-    $ pytest test_template_generator.py
+    $ pytest test_npt.py
 
 Note:
     Make sure to follow the test naming convention:

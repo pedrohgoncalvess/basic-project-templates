@@ -32,4 +32,4 @@ dependencies = [
 Homepage = "https://github.com/pedrohgoncalvess/basic-project-templates"
 
 [project.scripts]
-npt = "template_generator.main:main"
+npt = "npt.main:main"

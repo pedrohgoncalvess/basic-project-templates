@@ -1,1 +1,0 @@
-from template_generator.manipulate_files.copy_files import copy_project_files

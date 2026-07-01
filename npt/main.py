@@ -9,9 +9,9 @@ import pyperclip
 
 sys.path.append('..')
 
-from template_generator.templates.read import get_template_items, parse_template_items, get_possible_templates
-from template_generator.manipulate_files import copy_files, copy_project_files
-from template_generator.custom import * # Necessary for import custom functions
+from npt.templates.read import get_template_items, parse_template_items, get_possible_templates
+from npt.manipulate_files import copy_files, copy_project_files
+from npt.custom import * # Necessary for import custom functions
 
 
 def main() -> None:
@@ -46,7 +46,7 @@ def main() -> None:
             raise ValueError("Project path is required. Use the --path argument.")
 
     project_final_path = f"{project_path}/{project_name}"
-    template_generator_path = os.path.abspath(f"template_generator/files")
+    npt_files_path = os.path.abspath(f"npt/files")
 
     if os.path.exists(project_final_path):
         raise FileExistsError(f"Path {project_final_path} already exists.")
@@ -72,7 +72,7 @@ def main() -> None:
             print(f"Generating {project_name} project...")
             _, tt_add_files, _ = parse_template_items(add_files)
             try:
-                copy_project_files(project_final_path, template_generator_path, tt_add_files, rem_files)
+                copy_project_files(project_final_path, npt_files_path, tt_add_files, rem_files)
 
                 print(f"Project {project_name.upper()} created.\nProject path: {project_final_path}.\nUsing custom configuration.")
                 print(f"Project config was copied to the copy board.")
@@ -120,7 +120,7 @@ def main() -> None:
             if type_ == "normal":
                 in_files = args1
                 ex_files = args2
-                copy_project_files(project_final_path, template_generator_path, in_files, ex_files)
+                copy_project_files(project_final_path, npt_files_path, in_files, ex_files)
 
             print(f"Project {project_name.upper()} created.\nProject path: {project_final_path}.\nUsing custom configuration.")
             print(f"Project config was copied to the copy board.")

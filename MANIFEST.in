@@ -1,1 +1,1 @@
-recursive-include template_generator *
+recursive-include npt *
