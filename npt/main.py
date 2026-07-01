@@ -24,6 +24,10 @@ def main() -> None:
     parser.add_argument("--custom", type=str, default=None, required=False,
                         help="Custom files to use.")
 
+    if len(sys.argv) == 1:
+        parser.print_help()
+        sys.exit(0)
+
     args = parser.parse_args()  #TODO: Separate this main function in two functions. one for custom.yaml and another for template.
 
     custom_yaml_file = os.path.abspath(args.custom) if args.custom else None
