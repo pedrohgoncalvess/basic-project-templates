@@ -1,4 +1,4 @@
-from database.connection import PgConnection
+from database.async_connection import DatabaseConnection
 
 
-__all__ = ["PgConnection"]
+__all__ = ["DatabaseConnection"]

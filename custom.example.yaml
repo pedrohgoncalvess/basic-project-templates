@@ -7,7 +7,7 @@ projects:
       # Add your custom file set
       add:
         - database
-        - database/connection.py >> database/async_connection.py # >> Rename file and move file.
+        - database/async_connection.py >> database/connection.py # >> Rename file and move file.
 
       remove:
         # Remove files
