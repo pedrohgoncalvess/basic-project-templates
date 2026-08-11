@@ -9,17 +9,25 @@ def copy_project_files(project_final_path: str, npt_files_path: str, add_files: 
         if isinstance(file, tuple):
             original_name = file[0]
             new_name = file[1]
+            src = f"{npt_files_path}/{original_name}"
 
-            if os.path.isdir(f"{npt_files_path}/{original_name}"):
-                shutil.copytree(f"{npt_files_path}/{original_name}", f"{project_final_path}/{new_name}")
+            if os.path.isdir(src):
+                dest = f"{project_final_path}/{new_name}"
+                shutil.copytree(src, dest)
             else:
-                shutil.copy(f"{npt_files_path}/{original_name}", f"{project_final_path}/{new_name}")
+                dest = f"{project_final_path}/{new_name}"
+                os.makedirs(os.path.dirname(dest), exist_ok=True)
+                shutil.copy(src, dest)
             continue
 
-        if os.path.isdir(f"{npt_files_path}/{file}"):
-            shutil.copytree(f"{npt_files_path}/{file}", f"{project_final_path}/{file}")
+        src = f"{npt_files_path}/{file}"
+        if os.path.isdir(src):
+            dest = f"{project_final_path}/{file}"
+            shutil.copytree(src, dest)
         else:
-            shutil.copy(f"{npt_files_path}/{file}", f"{project_final_path}/{file}")
+            dest = f"{project_final_path}/{file}"
+            os.makedirs(os.path.dirname(dest), exist_ok=True)
+            shutil.copy(src, dest)
 
     if rem_files:
         renamed_files = [file[0] for file in add_files if isinstance(file, tuple)]
