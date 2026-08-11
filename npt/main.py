@@ -85,7 +85,7 @@ def main() -> None:
             print(f"Generating {project_name} project...")
             _, tt_add_files, _ = parse_template_items(add_files)
             try:
-                copy_project_files(project_final_path, npt_files_path, tt_add_files, rem_files)
+                copy_project_files(project_final_path, npt_files_path, tt_add_files, rem_files, project_name=project_name)
 
                 print(f"Project {project_name.upper()} created.\nProject path: {project_final_path}.\nUsing custom configuration.")
                 print(f"Project config was copied to the copy board.")
@@ -133,7 +133,7 @@ def main() -> None:
             if type_ == "normal":
                 in_files = args1
                 ex_files = args2
-                copy_project_files(project_final_path, npt_files_path, in_files, ex_files)
+                copy_project_files(project_final_path, npt_files_path, in_files, ex_files, project_name=project_name)
 
             print(f"Project {project_name.upper()} created.\nProject path: {project_final_path}.\nUsing custom configuration.")
             print(f"Project config was copied to the copy board.")
