@@ -2,6 +2,7 @@ templates:
   default:
     description: "Basic Python project with Makefile, logging, env files, utilities, tests and pyproject.toml."
     files:
+      - agents\agents.md
       - makefile
       - log
       - .env
@@ -17,6 +18,7 @@ templates:
   ml:
     description: "Machine Learning project with notebooks, data folder, dependencies for ML and basic structure."
     files:
+      - agents\agents.md
       - makefile
       - data
       - log
@@ -34,6 +36,7 @@ templates:
   etl-airflow:
     description: "ETL project with Apache Airflow, database migrations (yoyo), Docker Compose and dependencies."
     files:
+      - agents\agents.md
       - makefile
       - database
       - log
